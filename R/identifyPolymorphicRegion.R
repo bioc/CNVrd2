@@ -1,6 +1,3 @@
-setGeneric("identifyPolymorphicRegion",
-           function(Object, ...){standardGeneric("identifyPolymorphicRegion")})
-
 setMethod("identifyPolymorphicRegion", "CNVrd2",
           function(Object, segmentObject = NULL,
                                       xlim = NULL,
