@@ -3,6 +3,8 @@ setMethod("identifyPolymorphicRegion", "CNVrd2",
                                       xlim = NULL,
                                       quantileValue = c(0.1, 0.5, 0.9),
                                       quantileColor = NULL,
+                   polymorphicCriteria = c("SD", "Quantile"),
+                   sdThreshold = 0.1,
                                       thresholdForPolymorphicRegions = 
                                       c(0.975, 0.025),
                                       drawThresholds = FALSE,
@@ -94,7 +96,8 @@ setMethod("identifyPolymorphicRegion", "CNVrd2",
       mQ <- mQ[(mQ[, 1] >= outputST) & (mQ[, 2] <=outputEND ), ]
   }
 
-  thresholdsTogetPolymorphicRegions <- c(quantile(listQ[[1]][, 3],
+  if (polymorphicCriteria != "SD"){
+      thresholdsTogetPolymorphicRegions <- c(quantile(listQ[[1]][, 3],
                                             thresholdForPolymorphicRegions[1]),
                                          quantile(listQ[[nQuantile]][, 3],
                                               thresholdForPolymorphicRegions[2]))
@@ -112,6 +115,16 @@ setMethod("identifyPolymorphicRegion", "CNVrd2",
   highBoundary <- reduce(IRanges(highBoundary[, 1], highBoundary[, 2]))
 
   unionBoundary <- reduce(union(lowBoundary, highBoundary))
+  }
+
+  #################Get boundaries from SDs
+  else {
+      tempSD <- as.data.frame(mSD)
+      tempSD <- tempSD[tempSD[, 3] >= quantile(tempSD[, 3], 1 - sdThreshold),]
+      unionBoundary <- reduce(IRanges(tempSD[, 1], tempSD[, 2]))
+
+
+  }
 
 
   ##########Calculate Vst #################################################
@@ -199,7 +212,7 @@ setMethod("identifyPolymorphicRegion", "CNVrd2",
                                       mQuantile = mQuantile,
                                       Vst = valueVST,
                                       mSD = mSD)
-      plotPolymorphicRegion(Object = objectCNVrd2,
+      plotPolymorphicRegion(Object = Object,
                             polymorphicRegionObject = polymorphicRegionObject,
                             xlim = c(outputST, outputEND),
                             drawThresholds = drawThresholds,
