@@ -1,14 +1,16 @@
-## setGeneric("segmentSamples",
-##            function(Object, ...){standardGeneric("segmentSamples")})
+setGeneric("segmentSamples",
+           function(Object, ...){standardGeneric("segmentSamples")})
 
 setMethod("segmentSamples", "CNVrd2",
           function(Object, stdCntMatrix, entireGene = FALSE, inputBamFile = FALSE,
-                   testThreshold2Merge = NULL,
+                   testThreshold2Merge = 0.25,
                    bThresholds = NULL, 
 		   alpha = 0.01, nperm = 10000, p.method = "hybrid", 
 		   min.width = 2, kmax = 25, nmin = 200, eta = 0.05, 
 		   trim = 0.025, undo.splits = "none", 
 	           undo.prune = 0.05, undo.SD = 3, verbose = 1){
+##testThreshold2Merge: to merge two consecutive segments in the gene/locus being considered
+
 ##Checking parameters
   st = Object@st
   en = Object@en
@@ -69,6 +71,7 @@ return(fileTests1[sampleTest])
 #########################################################################
   ########Calculate observed read-count ratios for genes##################
   observedReadCountRatio <- matrix(0, ncol = ncol(genes), nrow = nnn)
+  rownames(observedReadCountRatio) <- bamFile
   if (inputBamFile == TRUE){
     for (cc in 1:ncol(genes)){
       for (ii in 1:nnn){
@@ -142,6 +145,7 @@ for (kk in 1:nnn){
       cnaInter[cnaInter$Start > cnaInter$End, ] <- NA
       cnaInter <- cnaInter[!is.na(cnaInter$Start),]
       if (dim(cnaInter)[1] > 1)
+
         segScores <- 0
       else
         segScores <- cnaInter[, 3]
@@ -174,8 +178,8 @@ for (kk in 1:nnn){
       segScores <- 0
       dimRow <- dim(cnaInter)[1] ##Number of rows of results
 ######Sign of segmentation scores
-      signOfSS <- ifelse(cnaInter[, 3] > testThreshold2Merge, 1,
-                         ifelse(cnaInter[, 3] <  -testThreshold2Merge, -1, 0))
+      signOfSS <- ifelse(as.numeric(cnaInter[, 3]) > testThreshold2Merge, 1,
+                         ifelse(as.numeric(cnaInter[, 3]) <  -testThreshold2Merge, -1, 0))
 ##Checking the same sign
       if (signTest(signOfSS) == 0)
           testSegment <- FALSE
