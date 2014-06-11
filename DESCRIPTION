@@ -1,7 +1,7 @@
 Package: CNVrd2
 Type: Package
 Title: CNVrd2: a read depth-based method to detect and genotype complex common copy number variants from next generation sequencing data.
-Version: 1.3.0
+Version: 1.3.1
 Date: 2014-03-28
 Author: Hoang Tan Nguyen, Tony R Merriman and MA Black
 Depends: R (>= 3.0.0), DNAcopy, methods, Rsamtools,
@@ -14,7 +14,7 @@ Description: CNVrd2 uses next-generation sequencing data to measure human gene c
         number polymorphic genomic regions.
 License: GPL-2
 Imports: IRanges
-biocViews: High Throughput Sequencing, CNV, SNP.
+biocViews: Sequencing, CopyNumberVariation, SNP
 Collate: AllClasses.R AllGenerics.R countReadInWindow.R
         segmentSamples.R segmentSamplesUsingPopInformation.R identifyPolymorphicRegion.R 
         plotPolymorphicRegion.R emnormalCNV.R groupCNVs.R searchGroupCNVs.R
