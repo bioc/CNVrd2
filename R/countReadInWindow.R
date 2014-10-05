@@ -1,7 +1,7 @@
 #This method counts number of reads in constant windows
 setMethod("countReadInWindow", "CNVrd2",
           function(Object, correctGC = FALSE, standardizingAllSamples = TRUE,
-                   rawReadCount = FALSE, byGCcontent = 1, useRSamtoolsToCount = TRUE,
+                   rawReadCount = FALSE, byGCcontent = 1, useRSamtoolsToCount = FALSE,
                    referenceGenome = "BSgenome.Hsapiens.UCSC.hg19",reference_fasta=NULL){
 
               if (correctGC){
