@@ -1,7 +1,7 @@
 #This method counts number of reads in constant windows
 setMethod("countReadInWindow", "CNVrd2",
           function(Object, correctGC = FALSE, standardizingAllSamples = TRUE,
-                   rawReadCount = FALSE, byGCcontent = 5,
+                   rawReadCount = FALSE, byGCcontent = 1, useRSamtoolsToCount = TRUE,
                    referenceGenome = "BSgenome.Hsapiens.UCSC.hg19",reference_fasta=NULL){
 
               if (correctGC){
@@ -43,13 +43,13 @@ setMethod("countReadInWindow", "CNVrd2",
                   return(table(ceiling(data/windows)))
                   }
               what <- c("pos")
-              param <- ScanBamParam( what = what)
+              param <- Rsamtools::ScanBamParam( what = what)
               numberofWindows <- ceiling((en - st + 1)/windows)
               seqStart <- seq(st, en, by = windows)[1:numberofWindows]
 
               ###Function to read Bam files and write out coordinates###############
               countReadForBamFile <- function(x){
-                    bam <- scanBam(paste(dirBamFile, bamFile[x], sep = ""),  param=param)[[1]]$pos
+                    bam <- Rsamtools::scanBam(paste(dirBamFile, bamFile[x], sep = ""),  param=param)[[1]]$pos
                     bam <- bam[!is.na(bam)]
 
                     
@@ -68,7 +68,24 @@ setMethod("countReadInWindow", "CNVrd2",
                     return(tempRow)
                     }
               ####Read all Bam files#########################################
-              readCountMatrix <- do.call(rbind, lapply(1:length(bamFile), countReadForBamFile))
+              if (useRSamtoolsToCount == TRUE){
+
+                  fileName <- paste(dirBamFile, bamFile, sep = "")
+                  what <- c("pos")
+                  which <- IRanges::RangesList('2' = IRanges(seq(objectCNVrd2@st, objectCNVrd2@en, by = objectCNVrd2@windows),
+                            seq(objectCNVrd2@st, objectCNVrd2@en, by = objectCNVrd2@windows) + objectCNVrd2@windows))
+
+                  names(which) <- as.character(as.name(gsub("chr", "", objectCNVrd2@chr)))
+                  param <- ScanBamParam( what = what, which = which)
+                  aa1 <- lapply(fileName, function(x) {
+                      message("Reading: ", x)
+                      return(countBam(x, param = param)$records)
+                         })
+                  readCountMatrix <-   do.call(rbind, aa1)
+
+              } else {
+                  readCountMatrix <- do.call(rbind, lapply(1:length(bamFile), countReadForBamFile))
+              }
               rownames(readCountMatrix) <- bamFile
               message("=============================================")
               message(dim(readCountMatrix)[1], " bam files were read")
