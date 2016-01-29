@@ -135,7 +135,7 @@ setMethod("plotPolymorphicRegion", "CNVrd2",
                                  ymax = rep(max(dfQuantile[, 2]) + 0.1 , length(genes[1, 1])))
 
           p1 <- p1 + geom_rect(data = genesDataFrame,
-                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink', fill = 'pink')
+                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink')
            }
       if (!is.null(geneNames)){
           if (is.null(yGeneNameQuantile))
@@ -151,8 +151,8 @@ setMethod("plotPolymorphicRegion", "CNVrd2",
           dfQuantileThreshold2 <- data.frame(x = c(mQ[dim(mQ)[1], 2],mQ[1, 1]),
                                              y = rep(thresholdsTogetPolymorphicRegions[2], 2))
 
-          p1 <- p1 + geom_line(data = dfQuantileThreshold1, aes(x = x, y = y), alpha = 0.3, fill = 'green', col = 'green', size = 0.8*cex)  +
-              geom_line(data = dfQuantileThreshold2, aes(x = x, y = y), alpha = 0.3, fill = 'green', col = 'green', size = 0.8*cex)
+          p1 <- p1 + geom_line(data = dfQuantileThreshold1, aes(x = x, y = y), alpha = 0.3, col = 'green', size = 0.8*cex)  +
+              geom_line(data = dfQuantileThreshold2, aes(x = x, y = y), alpha = 0.3, col = 'green', size = 0.8*cex)
           }
 
 
@@ -168,7 +168,7 @@ setMethod("plotPolymorphicRegion", "CNVrd2",
                                        ymin = rep(min(dfSD[, 2]) - 0.1, length(genes[1, ])),
                                        ymax = rep(max(dfSD[, 2]) + 0.1 , length(genes[1, 1])))
           p2 <- p2 + geom_rect(data = genesDataFrame,
-                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink', fill = 'pink')
+                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink')
            }
       if (!is.null(geneNames)){
           if (is.null(yGeneNameSD))
@@ -182,7 +182,7 @@ setMethod("plotPolymorphicRegion", "CNVrd2",
            if (drawThresholds == TRUE){
                 dfSDtemp <- data.frame(x = c(mSD[1, 1],  mSD[dim(mSD)[1], 2]),
                                              y = c(rep(quantile(mSD[, 3], 1 - sdThreshold), 2)))
-                 p2 <- p2 + geom_line(data = dfSDtemp, aes(x = x, y = y), alpha = 0.3, fill = 'green', col = 'green', size = 0.8*cex)
+                 p2 <- p2 + geom_line(data = dfSDtemp, aes(x = x, y = y), alpha = 0.3, col = 'green', size = 0.8*cex)
                 
                 
 
@@ -203,7 +203,7 @@ setMethod("plotPolymorphicRegion", "CNVrd2",
                                        ymin = rep(min(dfNSum[, 2]) - 0.1, length(genes[1, ])),
                                        ymax = rep(max(dfNSum[, 2]) + 0.1 , length(genes[1, 1])))
           pNSum <- pNSum + geom_rect(data = genesDataFrame,
-                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink', fill = 'pink')
+                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink')
            }
       if (!is.null(geneNames)){
           if (is.null(yGeneNameNSum))
@@ -231,7 +231,7 @@ setMethod("plotPolymorphicRegion", "CNVrd2",
                                        ymin = rep(min(dfPSum[, 2]) - 0.1, length(genes[1, ])),
                                        ymax = rep(max(dfPSum[, 2]) + 0.1 , length(genes[1, 1])))
           pPSum <- pPSum + geom_rect(data = genesDataFrame,
-                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink', fill = 'pink')
+                               aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),alpha = 0.4, col = 'pink')
            }
       if (!is.null(geneNames)){
           if (is.null(yGeneNamePSum))
