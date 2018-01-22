@@ -72,7 +72,7 @@ setMethod("countReadInWindow", "CNVrd2",
 
                   fileName <- paste(dirBamFile, bamFile, sep = "")
                   what <- c("pos")
-                  which <- IRanges::RangesList('2' = IRanges(seq(objectCNVrd2@st, objectCNVrd2@en, by = objectCNVrd2@windows),
+                  which <- IRanges::IRangesList('2' = IRanges(seq(objectCNVrd2@st, objectCNVrd2@en, by = objectCNVrd2@windows),
                             seq(objectCNVrd2@st, objectCNVrd2@en, by = objectCNVrd2@windows) + objectCNVrd2@windows))
 
                   names(which) <- as.character(as.name(gsub("chr", "", objectCNVrd2@chr)))
